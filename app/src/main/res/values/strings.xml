@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">RequestLocationAndShow</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="welcome_msg">Welcome!</string>
+    <string name="sign_out">登出</string>
+    <string name="contacts_permission_rationale">Access to account information is required to sign in.</string>
+    <string name="invite_menu_label">邀請</string>
+    <string name="invitation_message">Please join me for a Runner</string>
+    <string name="invitation_cta">Call to action</string>
+    <string name="invitation_title">Runner 邀請函</string>
+    <string name="sign_in">登入</string>
+    <string name="sign_up">登出</string>
+    <string name="fresh_config">刷新</string>
+    <string name="cause_crash">崩潰</string>
+</resources>

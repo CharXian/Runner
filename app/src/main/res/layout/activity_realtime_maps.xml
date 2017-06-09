@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.xian.requestlocationandshow.RealTimeMapsActivity">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="3dp"
+        map:layout_constraintHorizontal_bias="0.391"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintTop_toTopOf="parent"
+        tools:context="com.example.xian.requestlocationandshow.RealTimeMapsActivity" />
+
+    <ImageView
+        android:id="@+id/gray_bar"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/gary_bar"
+        app:layout_constraintTop_toBottomOf="@+id/main_map"
+        android:layout_marginLeft="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="1dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton0"
+        android:layout_width="75dp"
+        android:layout_height="35dp"
+        android:background="@drawable/white_but_0"
+        app:layout_constraintTop_toTopOf="@+id/gray_bar"
+        app:layout_constraintLeft_toLeftOf="@+id/gray_bar"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="75dp"
+        android:layout_height="35dp"
+        android:background="@drawable/white_but_1"
+        app:layout_constraintTop_toTopOf="@+id/gray_bar"
+        app:layout_constraintLeft_toRightOf="@+id/imageButton0"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="22dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="75dp"
+        android:layout_height="35dp"
+        android:background="@drawable/white_but_2"
+        app:layout_constraintTop_toTopOf="@+id/gray_bar"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/imageButton1"
+        android:layout_marginLeft="22dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="75dp"
+        android:layout_height="35dp"
+        android:background="@drawable/white_but_3"
+        app:layout_constraintTop_toTopOf="@+id/gray_bar"
+        android:layout_marginTop="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/imageButton2"
+        android:layout_marginLeft="22dp"/>
+
+    <TextView
+        android:id="@+id/textView0"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="7dp"
+        android:gravity="center"
+        android:textSize="18sp"
+        app:layout_constraintRight_toRightOf="@+id/imageButton0"
+        app:layout_constraintTop_toTopOf="@+id/imageButton0"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:textSize = "18sp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/imageButton1"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/imageButton1"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:textSize = "18sp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/imageButton2"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/imageButton2"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:textSize = "18sp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/imageButton3"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/imageButton3"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/tv_mySpeed"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="我的速度"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gray_bar" />
+
+    <TextView
+        android:id="@+id/tv_hisSpeed"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="對方速度"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mySpeed" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="距離差距"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hisSpeed" />
+
+    <TextView
+        android:id="@+id/tv_suggestSpeed"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="建議配速"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_distance" />
+
+    <TextView
+        android:id="@+id/tv_needTime"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:text="所需時間"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_suggestSpeed" />
+
+    <ImageView
+        android:id="@+id/text_lines"
+        android:layout_width="284dp"
+        android:layout_height="152dp"
+        android:background="@drawable/text_lines"
+        android:layout_marginTop="45dp"
+        app:layout_constraintTop_toBottomOf="@+id/gray_bar"
+        android:layout_marginRight="4dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/result_mySpeed"
+        android:layout_width="275dp"
+        android:layout_height="35dp"
+        android:layout_marginRight="4dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/gray_bar"
+        app:layout_constraintLeft_toRightOf="@+id/tv_mySpeed"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="1.0" />
+
+    <TextView
+        android:id="@+id/result_hisSpeed"
+        android:layout_width="275dp"
+        android:layout_height="35dp"
+        android:layout_marginRight="4dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/result_mySpeed" />
+
+    <TextView
+        android:id="@+id/result_distance"
+        android:layout_width="275dp"
+        android:layout_height="35dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:layout_marginRight="4dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/result_hisSpeed" />
+
+    <TextView
+        android:id="@+id/result_suggestSpeed"
+        android:layout_width="275dp"
+        android:layout_height="35dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:layout_marginRight="4dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/result_distance" />
+
+    <TextView
+        android:id="@+id/result_needTime"
+        android:layout_width="275dp"
+        android:layout_height="35dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:layout_marginRight="4dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/result_suggestSpeed" />
+
+
+</android.support.constraint.ConstraintLayout>
