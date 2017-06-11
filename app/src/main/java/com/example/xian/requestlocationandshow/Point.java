@@ -8,12 +8,15 @@ import android.location.Location;
 
 public class Point {
 
-    private double xValue, yValue;
+    private double latitude, longitude, xValue, yValue;
+    private int LatLngToMeterTransfer = 111000;
 
-    public Point(double xValue, double yValue){
+    public Point(double latitude, double longitude){
 
-        this.xValue = xValue;
-        this.yValue = yValue;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        xValue = latitude * LatLngToMeterTransfer;
+        yValue = longitude * LatLngToMeterTransfer;
     }
 
     public double getxValue(){return xValue;}
@@ -25,8 +28,8 @@ public class Point {
 
         float [] results = new float[1];
 
-        Location.distanceBetween(this.xValue, this.yValue
-                , oppositePoint.xValue, oppositePoint.yValue, results);
+        Location.distanceBetween(this.latitude, this.longitude
+                , oppositePoint.latitude, oppositePoint.longitude, results);
         return results[0];
     }
 
@@ -34,14 +37,14 @@ public class Point {
 
         double distanceToA, distanceToB;
 
-//        distanceToA = this.calculateDistance(pointA);
-//        distanceToB = this.calculateDistance(pointB);
+        distanceToA = this.calculateDistance(pointA);
+        distanceToB = this.calculateDistance(pointB);
 
-        distanceToA = Math.pow(this.xValue - pointA.xValue, 2)
-                     +Math.pow(this.yValue - pointA.yValue, 2);
-
-        distanceToB = Math.pow(this.xValue - pointB.xValue, 2)
-                     +Math.pow(this.yValue - pointB.yValue, 2);
+//        distanceToA = Math.pow(this.xValue - pointA.xValue, 2)
+//                     +Math.pow(this.yValue - pointA.yValue, 2);
+//
+//        distanceToB = Math.pow(this.xValue - pointB.xValue, 2)
+//                     +Math.pow(this.yValue - pointB.yValue, 2);
 
         if(distanceToA < distanceToB)
             return pointA;
@@ -54,14 +57,14 @@ public class Point {
 
         double distanceToA, distanceToB;
 
-//        distanceToA = this.calculateDistance(pointA);
-//        distanceToB = this.calculateDistance(pointB);
+        distanceToA = this.calculateDistance(pointA);
+        distanceToB = this.calculateDistance(pointB);
 
-        distanceToA = Math.pow(this.xValue - pointA.xValue, 2)
-                     +Math.pow(this.yValue - pointA.yValue, 2);
-
-        distanceToB = Math.pow(this.xValue - pointB.xValue, 2)
-                     +Math.pow(this.yValue - pointB.yValue, 2);
+//        distanceToA = Math.pow(this.xValue - pointA.xValue, 2)
+//                     +Math.pow(this.yValue - pointA.yValue, 2);
+//
+//        distanceToB = Math.pow(this.xValue - pointB.xValue, 2)
+//                     +Math.pow(this.yValue - pointB.yValue, 2);
 
         if(distanceToA > distanceToB)
             return pointA;

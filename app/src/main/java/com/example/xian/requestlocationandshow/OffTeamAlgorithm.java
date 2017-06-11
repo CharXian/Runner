@@ -15,9 +15,10 @@ public class OffTeamAlgorithm {
     List<Point> listOfPoints = new ArrayList<Point>();
     double shortestDistance = 999999, calculatedDistance, checkedDistance;
 
-    public boolean isOutOfTeam(LatLng userLocation, List<LatLng> listOfLocations){
+    public boolean isOutOfTeam(LatLng userLocation, List<LatLng> listOfLocations, double checkedValue){
 
         userPoint = new Point(userLocation.latitude, userLocation.longitude);
+        checkedDistance = checkedValue;
 
         for (LatLng location: listOfLocations) {
 
@@ -34,6 +35,9 @@ public class OffTeamAlgorithm {
 
             else
                 calculatedDistance = userPoint.calculateDistance(basePoint);
+
+            if(calculatedDistance < shortestDistance)
+                shortestDistance = calculatedDistance;
         }
 
         if (shortestDistance > checkedDistance)
@@ -45,7 +49,7 @@ public class OffTeamAlgorithm {
 
     private double distanceBetweenPointToLine(Point userPoint, Point basePoint, Point linePoint){
 
-        Vector vectorBU = new Vector(userPoint.getxValue()-basePoint.getyValue(),
+        Vector vectorBU = new Vector(userPoint.getxValue()-basePoint.getxValue(),
                                      userPoint.getyValue()-basePoint.getyValue());
 
         Vector vectorBL = new Vector(linePoint.getxValue()-basePoint.getxValue(),

@@ -3,6 +3,7 @@ package com.example.xian.requestlocationandshow;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -124,6 +125,7 @@ public class RealTimeMapsActivity extends AppCompatActivity implements
     private MajorMapController mMajorMapController;
     private List<LatLng> mLocationListOfUsers = new ArrayList<LatLng>();
     private List<User> mNameAndUidListOfUsers = new ArrayList<User>();
+    private List<LatLng> mLocationListOfTrackLine = new ArrayList<LatLng>();
     private Group mThisGroup;
 
     /**
@@ -152,9 +154,12 @@ public class RealTimeMapsActivity extends AppCompatActivity implements
         mRequestingLocationUpdates = true;
         mLastUpdateTime = "";
 
-        // Update values using data stored in the Bundle.
-        // If onCreate is re-initialized, updnate values.
-        updateValuesFromBundle(savedInstanceState);
+        // make fake data of running line
+        mLocationListOfTrackLine.add(new LatLng(24.179041, 120.648296));
+        mLocationListOfTrackLine.add(new LatLng(24.179954, 120.648275));
+        mLocationListOfTrackLine.add(new LatLng(24.179988, 120.650048));
+        mLocationListOfTrackLine.add(new LatLng(24.179937, 120.650126));
+        mLocationListOfTrackLine.add(new LatLng(24.179205, 120.649667));
 
         // Kick off the process of building the GoogleApiClient, LocationRequest, and
         // LocationSettingsRequest objects.
@@ -166,6 +171,12 @@ public class RealTimeMapsActivity extends AppCompatActivity implements
                 .findFragmentById(R.id.main_map);
         mMajorMapController = new MajorMapController();
         mapFragment.getMapAsync(mMajorMapController);
+
+        // Update values using data stored in the Bundle.
+        // If onCreate is re-initialized, updnate values.
+        updateValuesFromBundle(savedInstanceState);
+
+        mMajorMapController.setmLocationListOfTrackLine(mLocationListOfTrackLine);
 
         mLocationListOfUsers.add(new LatLng(24.179950, 120.649086));
         mLocationListOfUsers.add(new LatLng(24.179599, 120.649003));
@@ -187,6 +198,7 @@ public class RealTimeMapsActivity extends AppCompatActivity implements
         mMyUserId = FirebaseAuthHelper.getInstence().getUserID();
 
         initRealTimeLocationsEvent(mGid);
+
     }
 
     // only can set four or less buttons
@@ -209,7 +221,6 @@ public class RealTimeMapsActivity extends AppCompatActivity implements
             tv2.setText(mNameAndUidListOfUsers.get(2).username);
             tv3.setText(mNameAndUidListOfUsers.get(3).username);
         }
-
 
         /**
          * set text 型態要有ＮＡＭＥ
@@ -270,6 +281,73 @@ public class RealTimeMapsActivity extends AppCompatActivity implements
         Location.distanceBetween(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()
                                     , oppositeLatLng.latitude, oppositeLatLng.longitude, results);
         return results[0];
+    }
+
+    private void initRealTimeLocationsEvent(String gid){
+
+        mRealTimeLocationsEvent = new RealTimeLocationsEvent(gid) {
+            @Override
+            public void fetchDataFromSnapshot(List<String> uidList,
+                                              List<UserLocation> locationList) {
+
+                mLocationListOfUsers.clear();
+                for (UserLocation userlocation : locationList) {
+
+                    mLocationListOfUsers.add(userlocation.convertPositionToLatLng());
+                }
+
+                mMajorMapController.drawLocationPhoto(mLocationListOfUsers);
+
+                offTeamAlgorithmHandler(mLocationListOfUsers, 10);
+
+            }
+        };
+    }
+
+    private void offTeamAlgorithmHandler(List<LatLng> listOfUserLocations, double checkdeDistance){
+
+        OffTeamAlgorithm offTeamAlgorithm = new OffTeamAlgorithm();
+        //List<int> userlistOfOutOfTeam = new ArrayList<int>();
+        boolean[] userlistOfOutOfTeam = {false, false, false, false};
+
+        tv0.setBackgroundColor(Color.parseColor("#FAFAFA"));
+        tv1.setBackgroundColor(Color.parseColor("#FAFAFA"));
+        tv2.setBackgroundColor(Color.parseColor("#FAFAFA"));
+        tv3.setBackgroundColor(Color.parseColor("#FAFAFA"));
+
+        for (int i = 0; i < listOfUserLocations.size(); i++) {
+
+            if (offTeamAlgorithm.isOutOfTeam(listOfUserLocations.get(i), mLocationListOfTrackLine, checkdeDistance)){
+
+                userlistOfOutOfTeam[i] = true;
+
+                switch (i){
+
+                    case 0:
+                        tv0.setBackgroundColor(Color.parseColor("#ff0000"));
+                        break;
+
+                    case 1:
+                        tv1.setBackgroundColor(Color.parseColor("#ff0000"));
+                        break;
+
+                    case 2:
+                        tv2.setBackgroundColor(Color.parseColor("#ff0000"));
+                        break;
+
+                    case 3:
+                        tv3.setBackgroundColor(Color.parseColor("#ff0000"));
+                        break;
+
+                    default:
+                        Log.i("RealTimeMapsActivity", "offTeamAlgorithmHandler: switch is default!");
+                }
+            }
+        }
+
+        mMajorMapController.setFullListOfWarnGOlAsTransparent();
+        mMajorMapController.setListOfWarnGOlAsVisible(userlistOfOutOfTeam);
+
     }
 
     /**
@@ -588,11 +666,6 @@ public class RealTimeMapsActivity extends AppCompatActivity implements
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
         LatLng currentPosition = new LatLng(location.getLatitude(),location.getLongitude());
-//        mLocationListOfUsers.remove(3);
-//        mLocationListOfUsers.add(currentPosition);
-//        mMajorMapController.drawLocationPhoto(mLocationListOfUsers);
-//        WriteDatabaseHelper.getInstance()
-//                .writeRealTimeLocationToGroup("drink_gid",currentPosition);
 
         updateLocationUI(); // can be deleted
         WriteDatabaseHelper.getInstance().writeRealTimeLocationToGroup(mGid, currentPosition);
@@ -618,24 +691,6 @@ public class RealTimeMapsActivity extends AppCompatActivity implements
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
         savedInstanceState.putString(KEY_LAST_UPDATED_TIME_STRING, mLastUpdateTime);
         super.onSaveInstanceState(savedInstanceState);
-    }
-
-    private void initRealTimeLocationsEvent(String gid){
-
-        mRealTimeLocationsEvent = new RealTimeLocationsEvent(gid) {
-            @Override
-            public void fetchDataFromSnapshot(List<String> uidList,
-                                              List<UserLocation> locationList) {
-
-                mLocationListOfUsers.clear();
-                for (UserLocation userlocation : locationList) {
-
-                    mLocationListOfUsers.add(userlocation.convertPositionToLatLng());
-                }
-
-                mMajorMapController.drawLocationPhoto(mLocationListOfUsers);
-            }
-        };
     }
 
 }
