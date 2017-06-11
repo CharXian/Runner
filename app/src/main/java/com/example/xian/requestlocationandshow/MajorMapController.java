@@ -1,6 +1,5 @@
 package com.example.xian.requestlocationandshow;
 
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 
@@ -28,12 +27,15 @@ public class MajorMapController implements OnMapReadyCallback {
 
     private final List<BitmapDescriptor> mImages = new ArrayList<BitmapDescriptor>();
 
-    private List<GroundOverlay> ListOfGOl = new ArrayList<GroundOverlay>();
+    private List<GroundOverlay> ListOfUserGOl = new ArrayList<GroundOverlay>();
+    private List<GroundOverlay> ListOfWarnGOl = new ArrayList<GroundOverlay>();
+    private List<LatLng> mLocationListOfTrackLine;
+
     int[] imagedID = {R.drawable.zero, R.drawable.one, R.drawable.two, R.drawable.three,
                         R.drawable.four, R.drawable.five, R.drawable.six, R.drawable.seven,
                         R.drawable.eight, R.drawable.nine, R.drawable.ten};
 
-    private List<LatLng> mLocationListOfLine = new ArrayList<LatLng>();
+
 //    private List<Integer> ListOfImageReference = new ArrayList<Integer>();
 
     @Override
@@ -45,25 +47,53 @@ public class MajorMapController implements OnMapReadyCallback {
         LatLng initCamPosition = new LatLng(24.179734, 120.648635);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initCamPosition, 18f));
 
-        mLocationListOfLine.add(new LatLng(24.179041, 120.648296));
-        mLocationListOfLine.add(new LatLng(24.179954, 120.648275));
-        mLocationListOfLine.add(new LatLng(24.179988, 120.650048));
-        mLocationListOfLine.add(new LatLng(24.179937, 120.650126));
-        mLocationListOfLine.add(new LatLng(24.179205, 120.649667));
-        drawPolyLine(mLocationListOfLine);
+        if(mLocationListOfTrackLine != null)
+            drawPolyLine();
 
+    }
+
+    public void setmLocationListOfTrackLine(List<LatLng> mLocationListOfTrackLine) {
+        this.mLocationListOfTrackLine = mLocationListOfTrackLine;
+    }
+
+    public void setFullListOfWarnGOlAsTransparent(){
+
+        for (GroundOverlay groudOverlay: ListOfWarnGOl) {
+
+            groudOverlay.setVisible(false);
+        }
+    }
+
+    public void setListOfWarnGOlAsVisible(boolean[] needSetListOfUserInt){
+
+        for (int i = 0; i < needSetListOfUserInt.length; i++) {
+
+            if (needSetListOfUserInt[i])
+            {
+                Log.i("MajorMapController", "setListOfWarnGOlAsVisible: i = " + i);
+                ListOfWarnGOl.get(i).setVisible(true);
+            }
+
+        }
     }
 
     private void initUserCircleGroudOverlay (List<LatLng> LocationListOfUsers){
 
         for(int i = 0; i < LocationListOfUsers.size(); i++){
 
-            GroundOverlayOptions groundOverlayOptions = new GroundOverlayOptions()
+            GroundOverlayOptions warnGroundOverlayOptions = new GroundOverlayOptions()
+                    .image(BitmapDescriptorFactory.fromResource(R.drawable.red_warning))
+                    .position(LocationListOfUsers.get(i), 30f, 30f)
+                    .visible(false);
+
+            GroundOverlayOptions userGroundOverlayOptions = new GroundOverlayOptions()
                     .image(BitmapDescriptorFactory.fromResource(imagedID[i]))
                     .position(LocationListOfUsers.get(i), 10f, 10f)
                     .visible(true);
 
-            ListOfGOl.add(mMap.addGroundOverlay(groundOverlayOptions));
+            ListOfWarnGOl.add(mMap.addGroundOverlay(warnGroundOverlayOptions));
+
+            ListOfUserGOl.add(mMap.addGroundOverlay(userGroundOverlayOptions));
         }
 
         isInitial = true;
@@ -76,7 +106,9 @@ public class MajorMapController implements OnMapReadyCallback {
             for (int i = 0; i < LocationListOfUsers.size(); i++) {
 
                 LatLng position = LocationListOfUsers.get(i);
-                ListOfGOl.get(i).setPosition(position);
+                ListOfUserGOl.get(i).setPosition(position);
+                ListOfWarnGOl.get(i).setPosition(position);
+
             }
         }
 
@@ -85,16 +117,16 @@ public class MajorMapController implements OnMapReadyCallback {
 
     }
 
-    public void drawPolyLine(List<LatLng> LocationListOfLine){
+    private void drawPolyLine(){
 
-        if(LocationListOfLine == null)
+        if(mLocationListOfTrackLine == null)
             Log.i("MajorMapController", "drawPolyLine: List is null");
 
         else
             Log.i("MajorMapController", "drawPolyLine: List is not null");
 
         PolylineOptions lienOptions = new PolylineOptions()
-                .addAll(LocationListOfLine)
+                .addAll(mLocationListOfTrackLine)
                 .color(Color.parseColor("#54a2de"))
                 .width(50f);
 
@@ -104,7 +136,7 @@ public class MajorMapController implements OnMapReadyCallback {
         else
             Log.i("MajorMapController", "drawPolyLine: mMap is not null");
 
-        mMap.addPolyline(lienOptions);
+            mMap.addPolyline(lienOptions);
     }
 
     GoogleMap getGoogleMap(){
